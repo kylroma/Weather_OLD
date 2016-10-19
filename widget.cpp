@@ -56,13 +56,13 @@ void Widget::mousePressEvent(QMouseEvent *event)
 {
     if(event->button() == Qt::RightButton)
     {
-        QMenu menu(this);
-        menu.addAction("&Settings..", this, SLOT(slotSettings()));
-        menu.addAction("&Update", this, SLOT(slotUpdate()));
-        menu.addAction("&About", this, SLOT(slotAbout()));
-        menu.addSeparator();
-        menu.addAction("&Exit", qApp, SLOT(quit()));
-        menu.exec(event->globalPos());
+        QMenu *menu = new QMenu(this);
+        menu->addAction("&Settings..", this, SLOT(slotSettings()));
+        menu->addAction("&Update", this, SLOT(slotUpdate()));
+        menu->addAction("&About", this, SLOT(slotAbout()));
+        menu->addSeparator();
+        menu->addAction("&Exit", qApp, SLOT(quit()));
+        menu->exec(event->globalPos());
     }
     if(event->button() == Qt::LeftButton)
     {
@@ -99,26 +99,26 @@ void Widget::slotAbout()
 
 void Widget::slotSettings()
 {
-    Settings *setObj = new Settings(mCityName, mStyle, mMinutes);
-    if(setObj->exec() == QDialog::Accepted)
+   // Settings *setObj = new Settings(mCityName, mStyle, mMinutes);
+    Settings settingsDialog(mCityName, mStyle, mMinutes);
+    if(settingsDialog.exec() == QDialog::Accepted)
     {
-        if(mCityName != setObj->getCity())
+        if(mCityName != settingsDialog.getCity())
         {
-            mCityName = setObj->getCity();
+            mCityName = settingsDialog.getCity();
             getWeather();
         }
-        if(mStyle != setObj->getStyle())
+        if(mStyle != settingsDialog.getStyle())
         {
-            mStyle = setObj->getStyle();
+            mStyle = settingsDialog.getStyle();
             setStyleWidget();
         }
-        if(mMinutes != setObj->getMinutes())
+        if(mMinutes != settingsDialog.getMinutes())
         {
-            mMinutes = setObj->getMinutes();
+            mMinutes = settingsDialog.getMinutes();
             mTimer->start(minutesToMilliseconds());
         }
     }
-    delete setObj;
 }
 
 unsigned Widget::minutesToMilliseconds() const
@@ -154,7 +154,7 @@ void Widget::readSettings()
 {
     QString str;
     mSettings.beginGroup("/Settings");
-        str = mSettings.value("/city", "").toString();
+        str = mSettings.value("/city", mCityName).toString();
         mCityLabel->setText(str);
 
         str = mSettings.value("/temp", "").toString();
@@ -164,7 +164,7 @@ void Widget::readSettings()
         mCommentLabel->setText(str);
 
         QPoint positionWidget = mSettings.value("/position", mapToGlobal(QPoint(0, 0))).toPoint();
-        mStyle = mSettings.value("/style", "").toString();
+        mStyle = mSettings.value("/style", mStyle).toString();
         move(positionWidget);
 
         mMinutes = mSettings.value("/minutes").toUInt();
