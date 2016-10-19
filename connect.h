@@ -16,7 +16,7 @@ private:
     int mSockfd;
     string mHost;
 
-    bool mConectServer();
+    bool isConectServer();
 };
 
 #endif // CONNECT_H

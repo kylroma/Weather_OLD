@@ -38,6 +38,7 @@ Widget::Widget(QWidget *parent) :   QWidget(parent),
 
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnBottomHint | Qt::Tool);
 
+
     getWeather();
 }
 
@@ -140,7 +141,8 @@ void Widget::writeSettings()
 {
     QPoint positionWidget = mapToGlobal(QPoint(0, 0));
     mSettings.beginGroup("/Settings");
-        mSettings.setValue("/city", mCityLabel->text());
+        mSettings.setValue("/city", mCityName);
+        mSettings.setValue("/cityCountry", mCityLabel->text());
         mSettings.setValue("/temp", mTempLabel->text());
         mSettings.setValue("/comment", mCommentLabel->text());
         mSettings.setValue("/position", positionWidget);
@@ -154,6 +156,9 @@ void Widget::readSettings()
     QString str;
     mSettings.beginGroup("/Settings");
         str = mSettings.value("/city", mCityName).toString();
+        mCityName = str;
+
+        str = mSettings.value("/cityCountry", "").toString();
         mCityLabel->setText(str);
 
         str = mSettings.value("/temp", "").toString();

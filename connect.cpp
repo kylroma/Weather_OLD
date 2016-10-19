@@ -19,7 +19,7 @@ Connect::Connect(const string &host) :   mHost(host),
 {
 }
 
-bool Connect::mConectServer()
+bool Connect::isConectServer()
 {
     bool isConnected = false;
     struct addrinfo *servinfo;
@@ -48,7 +48,7 @@ bool Connect::mConectServer()
 std::string Connect::getWeather(const std::string & city)
 {
     string weather;
-    if(mConectServer())
+    if(isConectServer())
     {
         string message =    "GET /data/2.5/weather/?q=" + city +
                 "&units=metric&APPID=f35aabad9d11c1c2f787fad11e074b89 HTTP/1.1\r\n"\
@@ -67,7 +67,7 @@ std::string Connect::getWeather(const std::string & city)
 
 void Connect::saveFile(const std::string & fileName)
 {
-    if(mConectServer() && !fileName.empty())
+    if(!fileName.empty() && isConectServer())
     {
         const int SIZEBUF = 4096;
         char buf[SIZEBUF];
