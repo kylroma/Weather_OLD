@@ -99,7 +99,6 @@ void Widget::slotAbout()
 
 void Widget::slotSettings()
 {
-   // Settings *setObj = new Settings(mCityName, mStyle, mMinutes);
     Settings settingsDialog(mCityName, mStyle, mMinutes);
     if(settingsDialog.exec() == QDialog::Accepted)
     {
