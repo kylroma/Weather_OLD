@@ -6,11 +6,13 @@ HEADERS += \
     widget.h \
     connect.h \
     weather.h \
-    settings.h
+    settings.h \
+    connecttoserverweather.h
 
 SOURCES += \
     widget.cpp \
     main.cpp \
     connect.cpp \
     weather.cpp \
-    settings.cpp
+    settings.cpp \
+    connecttoserverweather.cpp

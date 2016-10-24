@@ -1,5 +1,5 @@
 #include "weather.h"
-#include "connect.h"
+#include "connecttoserverweather.h"
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -14,13 +14,13 @@ Weather::Weather()
 
 void Weather::connectWeather(const string &city)
 {
-    Connect connectServer;
+    ConnectToServerWeather connectServer;
     string weather = connectServer.getWeather(city);
     if(!weather.empty())
     {
         mTextToJason(weather);
         mJsonParser(weather);
-        connectServer.saveFile(mIconName);
+        connectServer.saveIconFile(mIconName);
     }
     else
         mComment = "Error: connect";

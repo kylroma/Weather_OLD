@@ -7,15 +7,13 @@ using std::string;
 class Connect
 {
 public:
-    Connect();
     Connect(const string& host);
 
-    std::string getWeather(const string & city);
-    void saveFile(const string & fileName);
+    std::string getMessage(const string & messageToServer);
+    void saveFile(const string & fileName, const string & messageToServer);
 private:
     int mSockfd;
     string mHost;
-
     bool isConectServer();
 };
 

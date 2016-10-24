@@ -9,12 +9,12 @@
 
 using std::string;
 
-Connect::Connect() :    mHost("api.openweathermap.org"),
+/*Connect::Connect() :    mHost("api.openweathermap.org"),
                         mSockfd(-1)
 {
-}
+}*/
 
-Connect::Connect(const string &host) :   mHost(host),
+Connect::Connect(const string & host) :   mHost(host),
                                          mSockfd(-1)
 {
 }
@@ -45,39 +45,36 @@ bool Connect::isConectServer()
     return isConnected;
 }
 
-std::string Connect::getWeather(const std::string & city)
+std::string Connect::getMessage(const std::string & messageToServer)
 {
-    string weather;
+    string returtnMessage;
     if(isConectServer())
     {
-        string message =    "GET /data/2.5/weather/?q=" + city +
-                "&units=metric&APPID=f35aabad9d11c1c2f787fad11e074b89 HTTP/1.1\r\n"\
-                "Host: api.openweathermap.org\r\n\r\n";
-        int len = message.length();
-        int bytes_sent = send(mSockfd, message.c_str(), len, 0);
+        int len = messageToServer.length();
+        int bytes_sent = send(mSockfd, messageToServer.c_str(), len, 0);
         char buf[1000];
 
         if((bytes_sent = recv(mSockfd, buf, 999, 0)) != -1)
-            weather.assign(buf, bytes_sent);
+            returtnMessage.assign(buf, bytes_sent);
 
         close(mSockfd);
     }
-    return weather;
+    return returtnMessage;
 }
 
-void Connect::saveFile(const std::string & fileName)
+
+void Connect::saveFile(const std::string & fileName, const std::string &messageToServer)
 {
-    if(!fileName.empty() && isConectServer())
+    bool ifInputDataNotEmpty = !fileName.empty() && !messageToServer.empty();
+    if(ifInputDataNotEmpty && isConectServer())
     {
         const int SIZEBUF = 4096;
         char buf[SIZEBUF];
         bool headerIsGone = false;
         int len = 0;
-        std::ofstream file("icon.png", std::ios::binary);
+        std::ofstream file(fileName, std::ios::binary);
 
-        string message = "GET /img/w/" + fileName + " HTTP/1.0\r\n"\
-                         "Host: api.openweathermap.org\r\n\r\n";
-        send(mSockfd, message.c_str(), message.length(), 0);
+        send(mSockfd, messageToServer.c_str(), messageToServer.length(), 0);
 
         while((len = recv(mSockfd, buf, SIZEBUF-1, 0)) > 0)
            {
