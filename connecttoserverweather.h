@@ -11,7 +11,6 @@ public:
     std::string getWeather(const std::string &city);
     void saveIconFile(const std::string &fileNameOnServer);
 private:
-   // void connect(const std::string &city);
     Connect connect;
 };
 

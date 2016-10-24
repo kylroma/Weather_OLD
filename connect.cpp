@@ -9,11 +9,6 @@
 
 using std::string;
 
-/*Connect::Connect() :    mHost("api.openweathermap.org"),
-                        mSockfd(-1)
-{
-}*/
-
 Connect::Connect(const string & host) :   mHost(host),
                                          mSockfd(-1)
 {
