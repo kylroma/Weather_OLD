@@ -18,26 +18,11 @@ void Weather::connectWeather(const string &city)
     string weather = connectServer.getWeather(city);
     if(!weather.empty())
     {
-        mTextToJason(weather);
         mJsonParser(weather);
         connectServer.saveIconFile(mIconName);
     }
     else
         mComment = "Error: connect";
-}
-
-void Weather::mTextToJason(string &text) const
-{
-    size_t start = text.find("{");
-    size_t end = text.rfind('}');
-
-    if((start != std::string::npos) && (end != std::string::npos))
-    {
-        text.erase(end+1);
-        text.erase(text.begin(), text.begin() + start);
-    }
-    else
-        text.clear();
 }
 
 void Weather::mJsonParser(const string &json)

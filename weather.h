@@ -20,6 +20,5 @@ private:
     string mIconName;
 
     void mJsonParser(const string &json);
-    void mTextToJason(string &text) const;
 };
 #endif // WEATHER_H

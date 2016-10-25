@@ -65,26 +65,14 @@ void Connect::saveFile(const std::string & fileName, const std::string &messageT
     {
         const int SIZEBUF = 4096;
         char buf[SIZEBUF];
-        bool headerIsGone = false;
         int len = 0;
         std::ofstream file(fileName, std::ios::binary);
 
         send(mSockfd, messageToServer.c_str(), messageToServer.length(), 0);
 
         while((len = recv(mSockfd, buf, SIZEBUF-1, 0)) > 0)
-           {
-            if (headerIsGone) {
-                file.write(buf, len);
-            } else {
-                char* ptr;
-                buf[len] = '\0';
-                ptr = strstr(buf, "\r\n\r\n");
-                if (ptr != NULL) {
-                    ptr += 4;
-                    file.write(ptr, len - (ptr - buf));
-                    headerIsGone = true;
-                }
-            }
+        {
+            file.write(buf, len);
         }
         file.close();
         close(mSockfd);
